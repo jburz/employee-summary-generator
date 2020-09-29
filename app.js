@@ -18,22 +18,22 @@ inquirer
     .prompt([
         {
             type: "input",
-            message: "What is your manager's name?",
+            message: "What is the manager's name?",
             name: "name"
         },
         {
             type: "input",
-            message: "What is their employee id?",
+            message: "What is the manager's employee id?",
             name: "id"
         },
         {
             type: "input",
-            message: "What is their email address?",
+            message: "What is the manger's email address?",
             name: "email"
         },
         {
             type: "input",
-            message: "What is their office number?",
+            message: "What is the manager's office number?",
             name: "officeNumber"
         }
     ]).then(function (res) {
@@ -41,25 +41,85 @@ inquirer
         const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
 
         employees.push(manager);
-
-        const renderEmployees = render(employees);
-
-        console.log(renderEmployees);
-
-        if (!fs.existsSync('\output')) {
-            console.log('Creating new directory');
-            fs.mkdirSync('\output');
-        }   else {
-            console.log('Directory already exists');
-        }
-        fs.writeFile(outputPath, renderEmployees, function (err) {
-            if (err) {
-                return console.log(err);
-            }
-            console.log('Employees html generated!');
-        });
+        addEmployee();
     })
-// After the user has input all employees desired, call the `render` function (required
+
+function addEmployee() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                message: "Which type of employee would you like to add?",
+                choices: ["Engineer", "Intern"],
+                name: "role"
+            },
+            {
+                type: "input",
+                message: "What is their name?",
+                name: "name"
+            },
+            {
+                type: "input",
+                message: "What is their employee id?",
+                name: "id"
+            },
+            {
+                type: "input",
+                message: "What is their email address?",
+                name: "email"
+            },
+            {
+                type: "input",
+                message: "What is their github account?",
+                name: "github",
+                when: (res) => res.role === "Engineer"
+            },
+            {
+                type: "input",
+                message: "What is their university?",
+                name: "github",
+                when: (res) => res.role === "Intern"
+            },
+            {
+                type: "list",
+                message: "Would you like to add any more employees?",
+                choices: ["Yes", "No"],
+                name: "addEmployee"
+            }
+        ]).then(function (res) {
+            switch (res.role) {
+                case "Engineer":
+                    const engineer = new Engineer(res.name, res.id, res.email, res.github);
+                    employees.push(engineer);
+                case "Intern":
+                    const intern = new Intern(res.name, res.id, res.email, res.school);
+                    employees.push(intern);
+            }
+            switch (res.addEmployee) {
+                case "Yes":
+                    addEmployee();
+                case "No":
+                    const renderEmployees = render(employees);
+                    console.log(renderEmployees);
+
+                    if (!fs.existsSync('\output')) {
+                        console.log('Creating new directory');
+                        fs.mkdirSync('\output');
+                    } else {
+                        console.log('Directory already exists');
+                    }
+                    fs.writeFile(outputPath, renderEmployees, function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                        console.log('Employees html generated!');
+                    });
+
+            }
+        });
+}
+
+    // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
 
