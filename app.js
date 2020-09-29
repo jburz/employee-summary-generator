@@ -50,8 +50,9 @@ inquirer
 
         console.log(employees);
 
-        render(employees);
+        const renderEmployees = render(employees);
 
+        console.log(renderEmployees);
         
     })
 // After the user has input all employees desired, call the `render` function (required
