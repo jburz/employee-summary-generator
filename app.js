@@ -9,7 +9,6 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const Employee = require("./lib/Employee");
 
 let employees = [];
 
@@ -53,7 +52,13 @@ inquirer
         const renderEmployees = render(employees);
 
         console.log(renderEmployees);
-        
+
+        fs.writeFile(outputPath,renderEmployees, function(err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log('Employees html generated!');
+        });
     })
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
