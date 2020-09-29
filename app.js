@@ -9,6 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
 
 let employees = [];
 
@@ -42,7 +43,7 @@ inquirer
 
         employees.push(manager);
         addEmployee();
-    })
+    });
 
 function addEmployee() {
     inquirer
@@ -77,7 +78,7 @@ function addEmployee() {
             {
                 type: "input",
                 message: "What is their university?",
-                name: "github",
+                name: "school",
                 when: (res) => res.role === "Intern"
             },
             {
@@ -87,38 +88,39 @@ function addEmployee() {
                 name: "addEmployee"
             }
         ]).then(function (res) {
-            switch (res.role) {
-                case "Engineer":
-                    const engineer = new Engineer(res.name, res.id, res.email, res.github);
-                    employees.push(engineer);
-                case "Intern":
-                    const intern = new Intern(res.name, res.id, res.email, res.school);
-                    employees.push(intern);
+            console.log(res.role);
+            console.log(res.addEmployee);
+            if (res.role === "Engineer") {
+                const engineer = new Engineer(res.name, res.id, res.email, res.github);
+                employees.push(engineer);
+            } else if (res.role === "Intern") {
+                const intern = new Intern(res.name, res.id, res.email, res.school);
+                employees.push(intern);
             }
-            switch (res.addEmployee) {
-                case "Yes":
-                    addEmployee();
-                case "No":
-                    const renderEmployees = render(employees);
-                    console.log(renderEmployees);
 
-                    if (!fs.existsSync('\output')) {
-                        console.log('Creating new directory');
-                        fs.mkdirSync('\output');
-                    } else {
-                        console.log('Directory already exists');
+            if (res.addEmployee === "Yes") {
+                addEmployee();
+            } else if (res.addEmployee === "No") {
+                const renderEmployees = render(employees);
+                console.log(renderEmployees);
+
+                if (!fs.existsSync('\output')) {
+                    console.log('Creating new directory');
+                    fs.mkdirSync('\output');
+                } else {
+                    console.log('Directory already exists');
+                }
+                fs.writeFile(outputPath, renderEmployees, function (err) {
+                    if (err) {
+                        return console.log(err);
                     }
-                    fs.writeFile(outputPath, renderEmployees, function (err) {
-                        if (err) {
-                            return console.log(err);
-                        }
-                        console.log('Employees html generated!');
-                    });
+                    console.log('Employees html generated!');
+                });
 
             }
-        });
+        })
+        
 }
-
     // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
