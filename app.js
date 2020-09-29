@@ -36,24 +36,23 @@ inquirer
             message: "What is their office number?",
             name: "officeNumber"
         }
-    ]).then(function(res) {
+    ]).then(function (res) {
 
         const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
-        console.log(manager.getRole());
-        console.log(manager.getName());
-        console.log(manager.getId());
-        console.log(manager.getEmail());
-        console.log(manager.getOfficeNumber());
 
         employees.push(manager);
-
-        console.log(employees);
 
         const renderEmployees = render(employees);
 
         console.log(renderEmployees);
 
-        fs.writeFile(outputPath,renderEmployees, function(err) {
+        if (!fs.existsSync('\output')) {
+            console.log('Creating new directory');
+            fs.mkdirSync('\output');
+        }   else {
+            console.log('Directory already exists');
+        }
+        fs.writeFile(outputPath, renderEmployees, function (err) {
             if (err) {
                 return console.log(err);
             }
