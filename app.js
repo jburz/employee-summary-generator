@@ -103,16 +103,16 @@ function addEmployee() {
                 const renderEmployees = render(employees);
 
                 if (!fs.existsSync('\output')) {
-                    console.log('Creating new directory');
+                    console.log('Creating new output folder');
                     fs.mkdirSync('\output');
                 } else {
-                    console.log('Directory already exists');
+                    console.log('Output folder already exists');
                 }
                 fs.writeFile(outputPath, renderEmployees, function (err) {
                     if (err) {
                         return console.log(err);
                     }
-                    console.log('Employees html generated!');
+                    console.log('Employees html generated logged in output folder!');
                 });
 
             }
