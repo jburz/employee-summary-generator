@@ -14,7 +14,9 @@
     "jest": "^26.4.2"
   },
   "scripts": {
-    "test": "jest --verbose test/"
+    "test": "jest --verbose test/",
+    "start": "node app.js",
+    "watch": "nodemon app.js"
   },
   "repository": {
     "type": "git",

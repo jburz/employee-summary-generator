@@ -9,7 +9,6 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
 
 let employees = [];
 
@@ -102,7 +101,6 @@ function addEmployee() {
                 addEmployee();
             } else if (res.addEmployee === "No") {
                 const renderEmployees = render(employees);
-                console.log(renderEmployees);
 
                 if (!fs.existsSync('\output')) {
                     console.log('Creating new directory');
