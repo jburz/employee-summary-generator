@@ -5,6 +5,7 @@ This is a CLI (command line interface) app will ask input for input from the use
 
 ## Table of Contents
   * [Description](#Description)
+  * [Screenshots](#Screenshots)
   * [Installation](#Installation)
   * [Usage](#Usage)
   * [License](#License)
@@ -12,6 +13,12 @@ This is a CLI (command line interface) app will ask input for input from the use
   * [Test](#Tests)
   * [Questions](#Questions)
 <br>
+
+## Screenshots
+![cli app](./Assets/cliApp.png)
+
+![html render](./Assets/html.png)
+
 
 ## Installation
 Clone the repo from my github account.  You will need to run npm i to install any dependencies for the app.
